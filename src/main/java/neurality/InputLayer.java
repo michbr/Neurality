@@ -1,12 +1,15 @@
+package neurality;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by bmichaud on 10/24/2016.
  */
 public class InputLayer {
 
-    List<NeuronInput> inputs = new ArrayList<>();
+    List<IOutputValue> inputs = new ArrayList<>();
 
     public InputLayer(int inputCount) {
         for (int i = 0; i < inputCount; ++i) {
@@ -15,9 +18,11 @@ public class InputLayer {
     }
 
     public void setOutputLayer(NeuronLayer outputLayer) {
-        for(NeuronInput n : inputs) {
+        Random random = new Random(System.currentTimeMillis());
+
+        for(IOutputValue n : inputs) {
             for (Neuron output : outputLayer.getNeuronList()) {
-                output.addInput(n);
+                output.addInput(n, random.nextDouble() - random.nextDouble());
             }
         }
     }
@@ -28,7 +33,7 @@ public class InputLayer {
         }
     }
 
-    public static class UserInput implements NeuronInput {
+    public static class UserInput implements IOutputValue {
         private boolean value;
 
         public UserInput(boolean value) {
@@ -40,7 +45,7 @@ public class InputLayer {
         }
 
         @Override
-        public boolean getInputValue() {
+        public boolean getOutputValue() {
             return value;
         }
     }
