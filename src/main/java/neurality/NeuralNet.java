@@ -2,6 +2,7 @@ package neurality;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Queue;
 
 /**
  * Created by bmichaud on 10/24/2016.
@@ -45,6 +46,13 @@ public class NeuralNet {
         }
         weights.addAll(outputLayer.extractWeights());
         return weights;
+    }
+
+    public void setWeights(Queue<Double> weights) {
+        for (NeuronLayer neuronLayer : hiddenLayers) {
+            setWeights(weights);
+        }
+        outputLayer.setWeights(weights);
     }
 
     public void calculateOutput() {

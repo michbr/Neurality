@@ -32,6 +32,12 @@ public class Neuron implements IOutputValue {
         return weights;
     }
 
+    public void setWeights(Queue<Double> weights) {
+        for (NeuronInput input : inputs) {
+            input.setWeight(weights.remove());
+        }
+    }
+
     @Override
     public boolean getOutputValue() {
         double sum = 0;

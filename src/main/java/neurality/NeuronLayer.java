@@ -2,6 +2,7 @@ package neurality;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Queue;
 import java.util.Random;
 
 /**
@@ -23,6 +24,12 @@ public class NeuronLayer {
             weights.addAll(neuron.extractWeights());
         }
         return weights;
+    }
+
+    public void setWeights(Queue<Double> weights) {
+        for (Neuron neuron : neuronList) {
+            neuron.setWeights(weights);
+        }
     }
 
     public void setOutputLayer(NeuronLayer outputLayer) {
