@@ -11,17 +11,13 @@ public class NeuralNet {
 
     private InputLayer inputLayer;
 
-    //private neurality.NeuronLayer firstLayer;
     private NeuronLayer outputLayer;
 
     private List<NeuronLayer> hiddenLayers = new ArrayList<>();
 
     public NeuralNet(int inputCount, int outputCount, int middleCount, int hiddenLayerCount) {
         inputLayer = new InputLayer(inputCount);
-        //firstLayer = new neurality.NeuronLayer(inputCount);
         outputLayer = new NeuronLayer(outputCount);
-        //inputLayer.setOutputLayer(firstLayer);
-        //neurality.NeuronLayer prevLayer = firstLayer;
         NeuronLayer prevLayer = null;
         for (int i = 0; i < hiddenLayerCount; ++i) {
             NeuronLayer newLayer = new NeuronLayer(middleCount);
@@ -50,13 +46,13 @@ public class NeuralNet {
 
     public void setWeights(Queue<Double> weights) {
         for (NeuronLayer neuronLayer : hiddenLayers) {
-            setWeights(weights);
+            neuronLayer.setWeights(weights);
         }
         outputLayer.setWeights(weights);
     }
 
-    public void calculateOutput() {
-        System.out.println(outputLayer.getOutput());
+    public List<Boolean> calculateOutput() {
+        return outputLayer.getOutput();
     }
 
     public void setInputs(boolean [] inputs) {

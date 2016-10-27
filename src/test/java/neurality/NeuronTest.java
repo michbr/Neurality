@@ -2,6 +2,7 @@ package neurality;
 
 import org.junit.Test;
 
+import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -20,6 +21,32 @@ public class NeuronTest {
         }, .5);
         assertEquals(1, neuron.extractWeights().size());
         assertEquals(.5, neuron.extractWeights().get(0).doubleValue(), .000001);
+    }
+
+    @Test
+    public void testGetOutput() {
+        Neuron neuron = new Neuron(.5);
+        neuron.addInput(new IOutputValue() {
+            @Override
+            public boolean getOutputValue() {
+                return true;
+            }
+        }, .6);
+        assertTrue(neuron.getOutputValue());
+    }
+
+    @Test
+    public void testGetOutput_multipleNeurons() {
+        Neuron a = new Neuron(.5);
+        Neuron b = new Neuron(.5);
+        a.addInput(new IOutputValue() {
+            @Override
+            public boolean getOutputValue() {
+                return true;
+            }
+        }, .6);
+        b.addInput(a, .6);
+        assertTrue(b.getOutputValue());
     }
 
 }

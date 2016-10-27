@@ -9,7 +9,6 @@ public class Neuron implements IOutputValue {
 
     private double activationThreshold;
     private List<NeuronInput> inputs = new ArrayList<>();
-    //private Map<neurality.IOutputValue, Double> weightMap = new HashMap<>();
 
     public Neuron(double activationThreshold) {
         this.activationThreshold = activationThreshold;
@@ -42,7 +41,7 @@ public class Neuron implements IOutputValue {
     public boolean getOutputValue() {
         double sum = 0;
         for (NeuronInput input : inputs) {
-            sum+= ((input.getInput().getOutputValue()) ? 1 : 0) * input.getWeight();
+            sum+= ((input.getInput().getOutputValue()) ? 1.0 : 0.0) * input.getWeight();
         }
         return (sum - activationThreshold) > 0;
     }

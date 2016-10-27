@@ -14,7 +14,7 @@ public class NeuronLayer {
 
     public NeuronLayer(int neuronCount) {
         for(int i = 0; i < neuronCount; ++i) {
-            neuronList.add(new Neuron(.5));
+            neuronList.add(new Neuron(0));
         }
     }
 
@@ -41,10 +41,10 @@ public class NeuronLayer {
         }
     }
 
-    public String getOutput() {
-        String result = "";
+    public List<Boolean> getOutput() {
+        List<Boolean> result = new ArrayList<>();
         for(Neuron neuron : neuronList) {
-            result += (neuron.getOutputValue()) ? "1 " : "0 ";
+            result.add(neuron.getOutputValue());
         }
         return result;
     }
