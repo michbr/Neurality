@@ -17,6 +17,7 @@ public class Population {
     private int chromosomeLength;
     private int populationSize;
     private double totalFitness;
+    private int generationCount = 0;
 
     public Population(NeuralNet net, int populationSize, double mutationRate, double crossoverRate) {
         this.mutationRate = mutationRate;
@@ -30,17 +31,28 @@ public class Population {
 
     public void run(int generations) {
         for (int i = 0; i < generations; ++i) {
-            System.out.println("Generation " + i);
-            evaluatePopulationFitness();
-            System.out.println("\tTotal Fitness: " + totalFitness);
-            List<Chromosome> newPopulation = new ArrayList<>();
-            while(newPopulation.size() < populationSize) {
-                Chromosome parent1 = selectRandomChromosome();
-                Chromosome parent2 = selectRandomChromosome();
-                crossover(parent1, parent2, newPopulation);
-            }
-            chromosomes = newPopulation;
+            runGeneration();
         }
+    }
+
+    public void run(double targetFitness) {
+        while(getBest().getFitness() < targetFitness) {
+            runGeneration();
+        }
+    }
+
+    private void runGeneration() {
+        System.out.println("Generation " + generationCount);
+        ++generationCount;
+        evaluatePopulationFitness();
+        System.out.println("\tTotal Fitness: " + totalFitness);
+        List<Chromosome> newPopulation = new ArrayList<>();
+        while(newPopulation.size() < populationSize) {
+            Chromosome parent1 = selectRandomChromosome();
+            Chromosome parent2 = selectRandomChromosome();
+            crossover(parent1, parent2, newPopulation);
+        }
+        chromosomes = newPopulation;
     }
 
     private void evaluatePopulationFitness() {
@@ -167,8 +179,8 @@ public class Population {
 
     public static void main(String[] args) {
         NeuralNet net = new NeuralNet(2, 1, 4, 2);
-        Population p = new Population(net, 50, .05, .7);
-        p.run(400);
+        Population p = new Population(net, 20, .05, .7);
+        p.run(4.0);
         Chromosome chromosome = p.getBest();
         LinkedList<Double> weights = new LinkedList<>();
         weights.addAll(chromosome.getWeights());
