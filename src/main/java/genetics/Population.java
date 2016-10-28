@@ -8,7 +8,7 @@ import java.util.*;
  * Created by bmichaud on 10/26/2016.
  */
 public class Population {
-    List<Chromosome> chromosomes = new ArrayList<>();
+    private List<Chromosome> chromosomes = new ArrayList<>();
     private double mutationRate;
     private double crossoverRate;
     private NeuralNet net;
@@ -70,24 +70,10 @@ public class Population {
             population.add(b);
         } else {
             int crossoverIndex = random.nextInt(chromosomeLength-1);
-            Queue<Double> parentA = new LinkedList<>();
-            parentA.addAll(a.getWeights());
-            Queue<Double> parentB = new LinkedList<>();
-            parentB.addAll(b.getWeights());
-            LinkedList<Double> childA = new LinkedList<>();
-            LinkedList<Double> childB = new LinkedList<>();
 
-            for (int i = 0; i < crossoverIndex; ++i) {
-                childA.add(parentA.remove());
-                childB.add(parentB.remove());
-            }
+            Chromosome child1 = a.crossover(b, crossoverIndex);
+            Chromosome child2 = b.crossover(a, crossoverIndex);
 
-            for (int i = crossoverIndex; i < chromosomeLength; i++) {
-                childA.add(parentB.remove());
-                childB.add(parentA.remove());
-            }
-            Chromosome child1 = new Chromosome(childA);
-            Chromosome child2 = new Chromosome(childB);
             mutate(child1);
             mutate(child1);
             population.add(child1);

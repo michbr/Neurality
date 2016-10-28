@@ -1,5 +1,6 @@
 package genetics;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -24,6 +25,24 @@ public class Chromosome implements Comparable<Chromosome> {
 
     public double getFitness() {
         return fitness;
+    }
+
+    public Chromosome crossover(Chromosome other, int index) {
+        if (other == this) {
+            return this;
+        } else {
+            LinkedList<Double> childGenes = new LinkedList<>();
+            for (int i = 0; i < index; ++i) {
+                childGenes.add(weights.get(i));
+            }
+
+            for (int i = index; i < weights.size(); ++i) {
+                childGenes.add(other.weights.get(i));
+            }
+
+            Chromosome child = new Chromosome(childGenes);
+            return child;
+        }
     }
 
     @Override
