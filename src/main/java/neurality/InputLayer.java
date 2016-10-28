@@ -9,7 +9,7 @@ import java.util.Random;
  */
 public class InputLayer {
 
-    List<IOutputValue> inputs = new ArrayList<>();
+    private List<IOutputValue> inputs = new ArrayList<>();
 
     public InputLayer(int inputCount) {
         for (int i = 0; i < inputCount; ++i) {
@@ -28,7 +28,7 @@ public class InputLayer {
     }
 
     public void setInput(int index, boolean value) {
-        if (index > 0 && index < inputs.size()) {
+        if (index >= 0 && index < inputs.size()) {
             ((UserInput)inputs.get(index)).setValue(value);
         }
     }

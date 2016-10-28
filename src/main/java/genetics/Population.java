@@ -39,6 +39,7 @@ public class Population {
                 Chromosome parent2 = selectRandomChromosome();
                 crossover(parent1, parent2, newPopulation);
             }
+            chromosomes = newPopulation;
         }
     }
 
@@ -102,20 +103,26 @@ public class Population {
         double fitness = 0;
         net.setInputs(new boolean[] {true, true});
         List<Boolean> output = net.calculateOutput();
+        //printOutput(new boolean[] {true, true}, output);
+
         fitness += output.get(0) ? 0 : 1;
 
         net.setInputs(new boolean[] {false, true});
         output = net.calculateOutput();
+        //printOutput(new boolean[] {false, true}, output);
+
         fitness += output.get(0) ? 1 : 0;
 
         net.setInputs(new boolean[] {true, false});
         output = net.calculateOutput();
+        //printOutput(new boolean[] {true, false}, output);
+
         fitness += output.get(0) ? 1 : 0;
 
         net.setInputs(new boolean[] {false, false});
         output = net.calculateOutput();
+        //printOutput(new boolean[] {false, false}, output);
         fitness += output.get(0) ? 0 : 1;
-
         candidate.setFitness(fitness);
     }
 
@@ -159,9 +166,9 @@ public class Population {
     }
 
     public static void main(String[] args) {
-        NeuralNet net = new NeuralNet(2, 1, 2, 2);
-        Population p = new Population(net, 100, .05, .7);
-        p.run(300);
+        NeuralNet net = new NeuralNet(2, 1, 4, 2);
+        Population p = new Population(net, 50, .05, .7);
+        p.run(400);
         Chromosome chromosome = p.getBest();
         LinkedList<Double> weights = new LinkedList<>();
         weights.addAll(chromosome.getWeights());

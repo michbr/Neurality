@@ -20,4 +20,14 @@ public class NeuronLayerTest {
         assertEquals(3, weights.size());
     }
 
+    @Test
+    public void testCalculateOutputs() {
+        NeuronLayer layer = new NeuronLayer(1);
+        InputLayer inputLayer = new InputLayer(1);
+        inputLayer.setOutputLayer(layer);
+        inputLayer.setInput(0, true);
+        assertEquals(1, layer.getOutput().size());
+        assertEquals(true, layer.getOutput().get(0));
+    }
+
 }
