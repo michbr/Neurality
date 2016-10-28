@@ -65,7 +65,7 @@ public class Population {
     }
 
     private void crossover(Chromosome a, Chromosome b, List<Chromosome> population) {
-        if (a == b || random.nextDouble() > crossoverRate) {
+        if (random.nextDouble() > crossoverRate) {
             population.add(a);
             population.add(b);
         } else {
