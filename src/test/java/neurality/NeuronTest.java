@@ -1,5 +1,6 @@
 package neurality;
 
+import neurality.neurons.Neuron;
 import org.junit.Test;
 
 import static junit.framework.TestCase.assertTrue;

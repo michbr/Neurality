@@ -1,6 +1,7 @@
 package genetics;
 
 import neurality.NeuralNet;
+import util.GlobalRandom;
 
 import java.util.*;
 
@@ -12,7 +13,6 @@ public class Population {
     private double mutationRate;
     private double crossoverRate;
     private NeuralNet net;
-    private Random random = new Random(System.currentTimeMillis());
 
     private int chromosomeLength;
     private int populationSize;
@@ -65,7 +65,10 @@ public class Population {
     }
 
     private void crossover(Chromosome a, Chromosome b, List<Chromosome> population) {
+        Random random = GlobalRandom.getInstance().getRandom();
         if (random.nextDouble() > crossoverRate) {
+            a.mutate(mutationRate);
+            b.mutate(mutationRate);
             population.add(a);
             population.add(b);
         } else {
@@ -74,22 +77,10 @@ public class Population {
             Chromosome child1 = a.crossover(b, crossoverIndex);
             Chromosome child2 = b.crossover(a, crossoverIndex);
 
-            mutate(child1);
-            mutate(child1);
+            child1.mutate(mutationRate);
+            child2.mutate(mutationRate);
             population.add(child1);
             population.add(child2);
-        }
-    }
-
-    private void mutate(Chromosome chromosome) {
-        List<Double> weights = chromosome.getWeights();
-        Queue<Double> newWeights = new LinkedList<>();
-        for (double weight : weights) {
-            if (random.nextDouble() > mutationRate) {
-                newWeights.add(generateRandomGene());
-            } else {
-                newWeights.add(weight);
-            }
         }
     }
 
@@ -131,6 +122,7 @@ public class Population {
     }
 
     private Chromosome selectRandomChromosome() {
+        Random random = GlobalRandom.getInstance().getRandom();
         double slice = totalFitness * random.nextDouble();
 
         double accumulatedFitness = 0;
@@ -147,16 +139,11 @@ public class Population {
     private Chromosome generateRandomChromosome() {
         LinkedList<Double> weights = new LinkedList<>();
         for (int i = 0; i < chromosomeLength; i++) {
-            weights.add(generateRandomGene());
+            weights.add(Chromosome.generateRandomGene());
         }
         Chromosome result = new Chromosome(weights);
         return result;
     }
-
-    private double generateRandomGene() {
-        return random.nextDouble() - random.nextDouble();
-    }
-
 
     private Chromosome getBest() {
         evaluatePopulationFitness();
@@ -164,8 +151,8 @@ public class Population {
     }
 
     public static void main(String[] args) {
-        NeuralNet net = new NeuralNet(2, 1, 4, 2);
-        Population p = new Population(net, 20, .05, .7);
+        NeuralNet net = new NeuralNet(NeuralNet.NeuronMode.NEURON, 2, 1, 4, 2);
+        Population p = new Population(net, 20, .02, .7);
         p.run(4.0);
         Chromosome chromosome = p.getBest();
         LinkedList<Double> weights = new LinkedList<>();

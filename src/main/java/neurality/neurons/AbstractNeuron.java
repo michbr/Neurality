@@ -1,16 +1,21 @@
-package neurality;
+package neurality.neurons;
 
-import java.util.*;
+import neurality.IOutputValue;
+import neurality.NeuronInput;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Queue;
+import java.util.Random;
 
 /**
- * Created by bmichaud on 10/24/2016.
+ * Created by bmichaud on 10/31/2016.
  */
-public class Neuron implements IOutputValue {
+public abstract class AbstractNeuron implements IOutputValue {
+    protected double activationThreshold;
+    protected List<NeuronInput> inputs = new ArrayList<>();
 
-    private double activationThreshold;
-    private List<NeuronInput> inputs = new ArrayList<>();
-
-    public Neuron(double activationThreshold) {
+    public AbstractNeuron(double activationThreshold) {
         this.activationThreshold = activationThreshold;
     }
 
@@ -38,11 +43,5 @@ public class Neuron implements IOutputValue {
     }
 
     @Override
-    public boolean getOutputValue() {
-        double sum = 0;
-        for (NeuronInput input : inputs) {
-            sum+= ((input.getInput().getOutputValue()) ? 1.0 : 0.0) * input.getWeight();
-        }
-        return (sum - activationThreshold) > 0;
-    }
+    public abstract boolean getOutputValue();
 }

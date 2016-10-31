@@ -9,18 +9,22 @@ import java.util.Queue;
  */
 public class NeuralNet {
 
+    private final NeuronMode mode;
     private InputLayer inputLayer;
 
     private NeuronLayer outputLayer;
 
     private List<NeuronLayer> hiddenLayers = new ArrayList<>();
 
-    public NeuralNet(int inputCount, int outputCount, int middleCount, int hiddenLayerCount) {
+    private double defaultActivationThreshold = .5;
+
+    public NeuralNet(NeuronMode mode, int inputCount, int outputCount, int middleCount, int hiddenLayerCount) {
+        this.mode = mode;
         inputLayer = new InputLayer(inputCount);
-        outputLayer = new NeuronLayer(outputCount);
+        outputLayer = new NeuronLayer(mode, outputCount, defaultActivationThreshold);
         NeuronLayer prevLayer = null;
         for (int i = 0; i < hiddenLayerCount; ++i) {
-            NeuronLayer newLayer = new NeuronLayer(middleCount);
+            NeuronLayer newLayer = new NeuronLayer(mode, middleCount, defaultActivationThreshold);
             hiddenLayers.add(newLayer);
             if (prevLayer != null) {
                 prevLayer.setOutputLayer(newLayer);
@@ -62,12 +66,16 @@ public class NeuralNet {
     }
 
     public static void main(String[] args) {
-        NeuralNet net = new NeuralNet(2, 1, 1, 0);
+        NeuralNet net = new NeuralNet(NeuronMode.PERCEPTRON, 2, 1, 1, 0);
         net.setInputs(new boolean[] {true, true});
         net.calculateOutput();
         List<Double> weights = net.extractWeights();
         for (Double weight : weights) {
             System.out.println("weight: " + weight);
         }
+    }
+
+    public enum NeuronMode {
+        NEURON, PERCEPTRON;
     }
 }

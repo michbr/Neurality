@@ -12,7 +12,7 @@ public class PopulationTest {
 
     @Test
     public void testCreate() {
-        Population population = new Population(new NeuralNet(1, 1, 1, 0), 5, .7, .05);
+        Population population = new Population(new NeuralNet(NeuralNet.NeuronMode.PERCEPTRON, 1, 1, 1, 0), 5, .7, .05);
 
     }
 

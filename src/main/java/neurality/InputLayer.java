@@ -1,5 +1,8 @@
 package neurality;
 
+import neurality.neurons.AbstractNeuron;
+import neurality.neurons.Neuron;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -21,7 +24,7 @@ public class InputLayer {
         Random random = new Random(System.currentTimeMillis());
 
         for(IOutputValue n : inputs) {
-            for (Neuron output : outputLayer.getNeuronList()) {
+            for (AbstractNeuron output : outputLayer.getNeuronList()) {
                 output.addInput(n, random.nextDouble() - random.nextDouble());
             }
         }

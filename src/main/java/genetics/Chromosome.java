@@ -1,14 +1,15 @@
 package genetics;
 
-import java.util.LinkedList;
-import java.util.List;
+import util.GlobalRandom;
+
+import java.util.*;
 
 /**
  * Created by bmichaud on 10/26/2016.
  */
 public class Chromosome implements Comparable<Chromosome> {
 
-    private final List<Double> weights;
+    private List<Double> weights;
     private double fitness;
 
     public Chromosome(List<Double> weights) {
@@ -45,6 +46,19 @@ public class Chromosome implements Comparable<Chromosome> {
         }
     }
 
+    public void mutate(double mutationRate) {
+        List<Double> newWeights = new ArrayList<>();
+        Random random = GlobalRandom.getInstance().getRandom();
+        for (double weight : weights) {
+            if (random.nextDouble() > mutationRate) {
+                newWeights.add(generateRandomGene());
+            } else {
+                newWeights.add(weight);
+            }
+        }
+        weights = newWeights;
+    }
+
     @Override
     public int compareTo(Chromosome c) {
         if (c.fitness > fitness) {
@@ -53,5 +67,10 @@ public class Chromosome implements Comparable<Chromosome> {
             return 1;
         }
         return 0;
+    }
+
+    public static double generateRandomGene() {
+        Random random = GlobalRandom.getInstance().getRandom();
+        return random.nextDouble() - random.nextDouble();
     }
 }
