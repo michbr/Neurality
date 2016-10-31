@@ -46,11 +46,24 @@ public class Chromosome implements Comparable<Chromosome> {
         }
     }
 
-    public void mutate(double mutationRate) {
+    public void mutate(double mutationRate, double mutationViolence) {
         List<Double> newWeights = new ArrayList<>();
         Random random = GlobalRandom.getInstance().getRandom();
         for (double weight : weights) {
-            if (random.nextDouble() > mutationRate) {
+            if (random.nextDouble() < mutationRate) {
+                newWeights.add(weight + (generateRandomGene()*mutationViolence));
+            } else {
+                newWeights.add(weight);
+            }
+        }
+        weights = newWeights;
+    }
+
+    public void mutateViolently(double mutationRate) {
+        List<Double> newWeights = new ArrayList<>();
+        Random random = GlobalRandom.getInstance().getRandom();
+        for (double weight : weights) {
+            if (random.nextDouble() < mutationRate) {
                 newWeights.add(generateRandomGene());
             } else {
                 newWeights.add(weight);

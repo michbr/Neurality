@@ -25,7 +25,6 @@ public class ChromosomeTest {
         for (int i = 6; i < 10; ++i) {
             assertTrue(result.getWeights().get(i) > 0 );
         }
-
     }
 
     @Test
@@ -41,14 +40,13 @@ public class ChromosomeTest {
         for (int i = 7; i < 10; ++i) {
             assertTrue(result.getWeights().get(i) < 0 );
         }
-
     }
 
     @Test
     public void testMutate() {
 
         Chromosome a = new Chromosome(generateWeights(1, 100));
-        a.mutate(.5);
+        a.mutate(.5, 1);
         boolean passed = false;
         for (int i = 0; i < 100; ++i) {
             if (Math.abs(a.getWeights().get(i) - 1) > .00001) {

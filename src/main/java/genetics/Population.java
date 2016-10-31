@@ -18,12 +18,13 @@ public class Population {
     private int populationSize;
     private double totalFitness;
     private int generationCount = 0;
+    private double mutationPower;
 
-    public Population(NeuralNet net, int populationSize, double mutationRate, double crossoverRate) {
+    public Population(NeuralNet net, int populationSize, double mutationRate, double mutationPower, double crossoverRate) {
         this.mutationRate = mutationRate;
         this.crossoverRate = crossoverRate;
         this.populationSize = populationSize;
-        //net = new NeuralNet(2, 1, 1, 0);
+        this.mutationPower = mutationPower;
         chromosomeLength = net.extractWeights().size();
         this.net = net;
         populate();
@@ -67,8 +68,8 @@ public class Population {
     private void crossover(Chromosome a, Chromosome b, List<Chromosome> population) {
         Random random = GlobalRandom.getInstance().getRandom();
         if (random.nextDouble() > crossoverRate) {
-            a.mutate(mutationRate);
-            b.mutate(mutationRate);
+            a.mutate(mutationRate, mutationPower);
+            b.mutate(mutationRate, mutationPower);
             population.add(a);
             population.add(b);
         } else {
@@ -77,8 +78,8 @@ public class Population {
             Chromosome child1 = a.crossover(b, crossoverIndex);
             Chromosome child2 = b.crossover(a, crossoverIndex);
 
-            child1.mutate(mutationRate);
-            child2.mutate(mutationRate);
+            child1.mutate(mutationRate, mutationPower);
+            child2.mutate(mutationRate, mutationPower);
             population.add(child1);
             population.add(child2);
         }
@@ -151,19 +152,38 @@ public class Population {
     }
 
     public static void main(String[] args) {
-        NeuralNet net = new NeuralNet(NeuralNet.NeuronMode.NEURON, 2, 1, 4, 2);
-        Population p = new Population(net, 20, .02, .7);
+
+        //Setup the Neural Net
+        final int INPUT_NEURON_COUNT = 2;
+        final int OUTPUT_NEURON_COUNT = 1;
+        final int HIDDEN_LAYER_NEURON_COUNT = 4;
+        final int HIDDEN_LAYER_COUNT = 2;
+        NeuralNet net = new NeuralNet(NeuralNet.NeuronMode.NEURON, INPUT_NEURON_COUNT, OUTPUT_NEURON_COUNT, HIDDEN_LAYER_NEURON_COUNT, HIDDEN_LAYER_COUNT);
+        final int POPULATION_SIZE = 20;
+
+        //Setup the genetic algorithm
+        final double MUTATION_RATE = .01;
+        final double MUTATION_STRENGTH = .3;
+        final double CROSSOVER_RATE = .7;
+        Population p = new Population(net, POPULATION_SIZE, MUTATION_RATE, MUTATION_STRENGTH, CROSSOVER_RATE);
+
+        //Run
         p.run(4.0);
+
+        //Display results
         Chromosome chromosome = p.getBest();
         LinkedList<Double> weights = new LinkedList<>();
         weights.addAll(chromosome.getWeights());
         net.setWeights(weights);
+
         net.setInputs(new boolean[] {true, true});
         List<Boolean> output = net.calculateOutput();
         printOutput(new boolean[] {true, true}, output);
+
         net.setInputs(new boolean[] {false, true});
         output = net.calculateOutput();
         printOutput(new boolean[] {false, true}, output);
+
         net.setInputs(new boolean[] {true, false});
         output = net.calculateOutput();
         printOutput(new boolean[] {true, false}, output);
@@ -171,9 +191,6 @@ public class Population {
         net.setInputs(new boolean[] {false, false});
         output = net.calculateOutput();
         printOutput(new boolean[] {false, false}, output);
-
-
-        net.calculateOutput();
     }
 
     public static void printOutput(boolean[] input, List<Boolean> output) {
