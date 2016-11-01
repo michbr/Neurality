@@ -43,10 +43,11 @@ public class Population {
     }
 
     private void runGeneration() {
-        System.out.println("Generation " + generationCount);
+        //System.out.println("Generation " + generationCount);
         ++generationCount;
         evaluatePopulationFitness();
-        System.out.println("\tTotal Fitness: " + totalFitness);
+        if (generationCount % 10 == 0)
+            System.out.println("\tTotal Fitness: " + totalFitness);
         List<Chromosome> newPopulation = new ArrayList<>();
         while(newPopulation.size() < populationSize) {
             Chromosome parent1 = selectRandomChromosome();
@@ -92,27 +93,21 @@ public class Population {
 
         double fitness = 0;
         net.setInputs(new boolean[] {true, true});
-        List<Boolean> output = net.calculateOutput();
-        //printOutput(new boolean[] {true, true}, output);
-
-        fitness += output.get(0) ? 0 : 1;
+        List<Double> output = net.calculateOutput();
+        fitness += 1 - Math.abs(output.get(0));
 
         net.setInputs(new boolean[] {false, true});
         output = net.calculateOutput();
-        //printOutput(new boolean[] {false, true}, output);
-
-        fitness += output.get(0) ? 1 : 0;
+        fitness += 1 - Math.abs(output.get(0) - 1);
 
         net.setInputs(new boolean[] {true, false});
         output = net.calculateOutput();
-        //printOutput(new boolean[] {true, false}, output);
-
-        fitness += output.get(0) ? 1 : 0;
+        fitness += 1 - Math.abs(output.get(0) - 1);
 
         net.setInputs(new boolean[] {false, false});
         output = net.calculateOutput();
-        //printOutput(new boolean[] {false, false}, output);
-        fitness += output.get(0) ? 0 : 1;
+        fitness += 1 - Math.abs(output.get(0));
+
         candidate.setFitness(fitness);
     }
 
@@ -134,7 +129,7 @@ public class Population {
                 return chromosome;
             }
         }
-        return null;
+        return chromosomes.get(chromosomes.size()-1);
     }
 
     private Chromosome generateRandomChromosome() {
@@ -156,19 +151,19 @@ public class Population {
         //Setup the Neural Net
         final int INPUT_NEURON_COUNT = 2;
         final int OUTPUT_NEURON_COUNT = 1;
-        final int HIDDEN_LAYER_NEURON_COUNT = 4;
+        final int HIDDEN_LAYER_NEURON_COUNT = 7;
         final int HIDDEN_LAYER_COUNT = 2;
         NeuralNet net = new NeuralNet(NeuralNet.NeuronMode.NEURON, INPUT_NEURON_COUNT, OUTPUT_NEURON_COUNT, HIDDEN_LAYER_NEURON_COUNT, HIDDEN_LAYER_COUNT);
-        final int POPULATION_SIZE = 20;
+        final int POPULATION_SIZE = 200;
 
         //Setup the genetic algorithm
-        final double MUTATION_RATE = .01;
-        final double MUTATION_STRENGTH = .3;
+        final double MUTATION_RATE = .02;
+        final double MUTATION_STRENGTH = .4;
         final double CROSSOVER_RATE = .7;
         Population p = new Population(net, POPULATION_SIZE, MUTATION_RATE, MUTATION_STRENGTH, CROSSOVER_RATE);
 
         //Run
-        p.run(4.0);
+        p.run(2.8);
 
         //Display results
         Chromosome chromosome = p.getBest();
@@ -177,7 +172,7 @@ public class Population {
         net.setWeights(weights);
 
         net.setInputs(new boolean[] {true, true});
-        List<Boolean> output = net.calculateOutput();
+        List<Double> output = net.calculateOutput();
         printOutput(new boolean[] {true, true}, output);
 
         net.setInputs(new boolean[] {false, true});
@@ -193,10 +188,10 @@ public class Population {
         printOutput(new boolean[] {false, false}, output);
     }
 
-    public static void printOutput(boolean[] input, List<Boolean> output) {
+    public static void printOutput(boolean[] input, List<Double> output) {
         System.out.println("Input: (" +
                 (input[0] ? 1 : 0) + ", " +
                 (input[1] ? 1 : 0) + ")" +
-                "--> " + (output.get(0) ? 1 : 0));
+                "--> " + output.get(0));
     }
 }

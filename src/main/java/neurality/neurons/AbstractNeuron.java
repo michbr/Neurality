@@ -43,5 +43,5 @@ public abstract class AbstractNeuron implements IOutputValue {
     }
 
     @Override
-    public abstract boolean getOutputValue();
+    public abstract double getOutputValue();
 }

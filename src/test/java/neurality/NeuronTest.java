@@ -16,8 +16,8 @@ public class NeuronTest {
         Neuron neuron = new Neuron(.5);
         neuron.addInput(new IOutputValue() {
             @Override
-            public boolean getOutputValue() {
-                return false;
+            public double getOutputValue() {
+                return 0;
             }
         }, .5);
         assertEquals(1, neuron.extractWeights().size());
@@ -29,11 +29,11 @@ public class NeuronTest {
         Neuron neuron = new Neuron(.5);
         neuron.addInput(new IOutputValue() {
             @Override
-            public boolean getOutputValue() {
-                return true;
+            public double getOutputValue() {
+                return 1.0;
             }
         }, .6);
-        assertTrue(neuron.getOutputValue());
+        assertEquals(1.0, neuron.getOutputValue(), .000001);
     }
 
     @Test
@@ -42,12 +42,12 @@ public class NeuronTest {
         Neuron b = new Neuron(.5);
         a.addInput(new IOutputValue() {
             @Override
-            public boolean getOutputValue() {
-                return true;
+            public double getOutputValue() {
+                return 1;
             }
         }, .6);
         b.addInput(a, .6);
-        assertTrue(b.getOutputValue());
+        assertEquals(1.0, b.getOutputValue(), .00001);
     }
 
 }

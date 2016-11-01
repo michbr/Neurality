@@ -49,8 +49,8 @@ public class NeuronLayer {
         }
     }
 
-    public List<Boolean> getOutput() {
-        List<Boolean> result = new ArrayList<>();
+    public List<Double> getOutput() {
+        List<Double> result = new ArrayList<>();
         for(AbstractNeuron neuron : neuronList) {
             result.add(neuron.getOutputValue());
         }

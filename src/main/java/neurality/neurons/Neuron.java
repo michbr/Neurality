@@ -12,12 +12,12 @@ public class Neuron extends AbstractNeuron {
     }
 
     @Override
-    public boolean getOutputValue() {
+    public double getOutputValue() {
         double sum = 0;
         for (NeuronInput input : inputs) {
-            sum+= ((input.getInput().getOutputValue()) ? 1.0 : 0.0) * input.getWeight();
+            sum+= input.getInput().getOutputValue() * input.getWeight();
         }
         double finalInput = (1)/(1 + Math.exp(-sum));
-        return (finalInput - activationThreshold) > 0;
+        return finalInput - activationThreshold;
     }
 }

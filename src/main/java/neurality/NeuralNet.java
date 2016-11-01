@@ -55,7 +55,7 @@ public class NeuralNet {
         outputLayer.setWeights(weights);
     }
 
-    public List<Boolean> calculateOutput() {
+    public List<Double> calculateOutput() {
         return outputLayer.getOutput();
     }
 

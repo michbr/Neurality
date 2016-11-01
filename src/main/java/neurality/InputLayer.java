@@ -1,5 +1,6 @@
 package neurality;
 
+import neurality.inputs.BinaryInput;
 import neurality.neurons.AbstractNeuron;
 import neurality.neurons.Neuron;
 
@@ -16,7 +17,7 @@ public class InputLayer {
 
     public InputLayer(int inputCount) {
         for (int i = 0; i < inputCount; ++i) {
-            inputs.add(new UserInput(false));
+            inputs.add(new BinaryInput(false));
         }
     }
 
@@ -32,24 +33,7 @@ public class InputLayer {
 
     public void setInput(int index, boolean value) {
         if (index >= 0 && index < inputs.size()) {
-            ((UserInput)inputs.get(index)).setValue(value);
-        }
-    }
-
-    public static class UserInput implements IOutputValue {
-        private boolean value;
-
-        public UserInput(boolean value) {
-            this.value = value;
-        }
-
-        public void setValue(boolean value) {
-            this.value = value;
-        }
-
-        @Override
-        public boolean getOutputValue() {
-            return value;
+            ((BinaryInput)inputs.get(index)).setValue(value);
         }
     }
 }

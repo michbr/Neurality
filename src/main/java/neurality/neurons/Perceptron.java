@@ -12,11 +12,11 @@ public class Perceptron extends AbstractNeuron {
     }
 
     @Override
-    public boolean getOutputValue() {
+    public double getOutputValue() {
         double sum = 0;
         for (NeuronInput input : inputs) {
-            sum+= ((input.getInput().getOutputValue()) ? 1.0 : 0.0) * input.getWeight();
+            sum+= input.getInput().getOutputValue() * input.getWeight();
         }
-        return (sum - activationThreshold) > 0;
+        return ((sum - activationThreshold) > 0) ? 1.0 : 0;
     }
 }
