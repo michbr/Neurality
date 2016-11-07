@@ -9,6 +9,7 @@ import java.util.*;
  * Created by bmichaud on 10/26/2016.
  */
 public class Population {
+    private final FitnessEvaluator fitnessEvaluator;
     private List<Chromosome> chromosomes = new ArrayList<>();
     private double mutationRate;
     private double crossoverRate;
@@ -20,7 +21,8 @@ public class Population {
     private int generationCount = 0;
     private double mutationPower;
 
-    public Population(NeuralNet net, int populationSize, double mutationRate, double mutationPower, double crossoverRate) {
+    public Population(FitnessEvaluator fitnessEvaluator, NeuralNet net, int populationSize, double mutationRate, double mutationPower, double crossoverRate) {
+        this.fitnessEvaluator = fitnessEvaluator;
         this.mutationRate = mutationRate;
         this.crossoverRate = crossoverRate;
         this.populationSize = populationSize;
@@ -87,28 +89,7 @@ public class Population {
     }
 
     private void calculateFitness(Chromosome candidate) {
-        LinkedList<Double> weights = new LinkedList<>();
-        weights.addAll(candidate.getWeights());
-        net.setWeights(weights);
-
-        double fitness = 0;
-        net.setInputs(new boolean[] {true, true});
-        List<Double> output = net.calculateOutput();
-        fitness += 1 - Math.abs(output.get(0));
-
-        net.setInputs(new boolean[] {false, true});
-        output = net.calculateOutput();
-        fitness += 1 - Math.abs(output.get(0) - 1);
-
-        net.setInputs(new boolean[] {true, false});
-        output = net.calculateOutput();
-        fitness += 1 - Math.abs(output.get(0) - 1);
-
-        net.setInputs(new boolean[] {false, false});
-        output = net.calculateOutput();
-        fitness += 1 - Math.abs(output.get(0));
-
-        candidate.setFitness(fitness);
+        candidate.setFitness(fitnessEvaluator.evaluateFitness(candidate));
     }
 
     private void populate() {
@@ -160,7 +141,7 @@ public class Population {
         final double MUTATION_RATE = .02;
         final double MUTATION_STRENGTH = .4;
         final double CROSSOVER_RATE = .7;
-        Population p = new Population(net, POPULATION_SIZE, MUTATION_RATE, MUTATION_STRENGTH, CROSSOVER_RATE);
+        Population p = new Population(new XORFitnessEvaluator(net), net, POPULATION_SIZE, MUTATION_RATE, MUTATION_STRENGTH, CROSSOVER_RATE);
 
         //Run
         p.run(2.8);
