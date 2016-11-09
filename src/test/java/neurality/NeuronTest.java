@@ -13,7 +13,7 @@ public class NeuronTest {
 
     @Test
     public void testExtractWeights() {
-        Neuron neuron = new Neuron(.5);
+        Neuron neuron = new Neuron(.5, false);
         neuron.addInput(new IOutputValue() {
             @Override
             public double getOutputValue() {
@@ -25,8 +25,22 @@ public class NeuronTest {
     }
 
     @Test
+    public void testExtractWeights_EvolveActivationThreshold() {
+        Neuron neuron = new Neuron(.2, true);
+        neuron.addInput(new IOutputValue() {
+            @Override
+            public double getOutputValue() {
+                return 0;
+            }
+        }, .5);
+        assertEquals(2, neuron.extractWeights().size());
+        assertEquals(.5, neuron.extractWeights().get(0).doubleValue(), .000001);
+        assertEquals(.2, neuron.extractWeights().get(1).doubleValue(), .000001);
+    }
+
+    @Test
     public void testGetOutput() {
-        Neuron neuron = new Neuron(.5);
+        Neuron neuron = new Neuron(.5, false);
         neuron.addInput(new IOutputValue() {
             @Override
             public double getOutputValue() {
@@ -38,8 +52,8 @@ public class NeuronTest {
 
     @Test
     public void testGetOutput_multipleNeurons() {
-        Neuron a = new Neuron(.5);
-        Neuron b = new Neuron(.5);
+        Neuron a = new Neuron(.5, false);
+        Neuron b = new Neuron(.5, false);
         a.addInput(new IOutputValue() {
             @Override
             public double getOutputValue() {

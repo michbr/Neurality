@@ -18,13 +18,13 @@ public class NeuralNet {
 
     private double defaultActivationThreshold = .5;
 
-    public NeuralNet(NeuronMode mode, int inputCount, int outputCount, int middleCount, int hiddenLayerCount) {
+    public NeuralNet(NeuronMode mode, boolean evolveActivationThreshold, int inputCount, int outputCount, int middleCount, int hiddenLayerCount) {
         this.mode = mode;
         inputLayer = new InputLayer(inputCount);
-        outputLayer = new NeuronLayer(mode, outputCount, defaultActivationThreshold);
+        outputLayer = new NeuronLayer(mode, outputCount, defaultActivationThreshold, evolveActivationThreshold);
         NeuronLayer prevLayer = null;
         for (int i = 0; i < hiddenLayerCount; ++i) {
-            NeuronLayer newLayer = new NeuronLayer(mode, middleCount, defaultActivationThreshold);
+            NeuronLayer newLayer = new NeuronLayer(mode, middleCount, defaultActivationThreshold, evolveActivationThreshold);
             hiddenLayers.add(newLayer);
             if (prevLayer != null) {
                 prevLayer.setOutputLayer(newLayer);
@@ -66,7 +66,7 @@ public class NeuralNet {
     }
 
     public static void main(String[] args) {
-        NeuralNet net = new NeuralNet(NeuronMode.PERCEPTRON, 2, 1, 1, 0);
+        NeuralNet net = new NeuralNet(NeuronMode.PERCEPTRON, false, 2, 1, 1, 0);
         net.setInputs(new boolean[] {true, true});
         net.calculateOutput();
         List<Double> weights = net.extractWeights();

@@ -15,7 +15,7 @@ public class InputLayerTest {
         inputLayer.setInput(1, true);
         inputLayer.setInput(1, false);
 
-        NeuronLayer neuronLayer = new NeuronLayer(NeuralNet.NeuronMode.PERCEPTRON, 1, .5);
+        NeuronLayer neuronLayer = new NeuronLayer(NeuralNet.NeuronMode.PERCEPTRON, 1, .5, false);
         inputLayer.setOutputLayer(neuronLayer);
         assertEquals(2, neuronLayer.extractWeights().size());
     }

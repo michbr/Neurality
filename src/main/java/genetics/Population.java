@@ -134,17 +134,18 @@ public class Population {
         final int OUTPUT_NEURON_COUNT = 1;
         final int HIDDEN_LAYER_NEURON_COUNT = 7;
         final int HIDDEN_LAYER_COUNT = 2;
-        NeuralNet net = new NeuralNet(NeuralNet.NeuronMode.NEURON, INPUT_NEURON_COUNT, OUTPUT_NEURON_COUNT, HIDDEN_LAYER_NEURON_COUNT, HIDDEN_LAYER_COUNT);
+        final boolean EVOLVE_ACTIVATION_THRESHOLD = true;
+        NeuralNet net = new NeuralNet(NeuralNet.NeuronMode.NEURON, EVOLVE_ACTIVATION_THRESHOLD, INPUT_NEURON_COUNT, OUTPUT_NEURON_COUNT, HIDDEN_LAYER_NEURON_COUNT, HIDDEN_LAYER_COUNT);
         final int POPULATION_SIZE = 200;
 
         //Setup the genetic algorithm
-        final double MUTATION_RATE = .02;
-        final double MUTATION_STRENGTH = .4;
+        final double MUTATION_RATE = .03;
+        final double MUTATION_STRENGTH = .5;
         final double CROSSOVER_RATE = .7;
         Population p = new Population(new XORFitnessEvaluator(net), net, POPULATION_SIZE, MUTATION_RATE, MUTATION_STRENGTH, CROSSOVER_RATE);
 
         //Run
-        p.run(2.8);
+        p.run(3.95);
 
         //Display results
         Chromosome chromosome = p.getBest();
@@ -167,6 +168,7 @@ public class Population {
         net.setInputs(new boolean[] {false, false});
         output = net.calculateOutput();
         printOutput(new boolean[] {false, false}, output);
+        System.out.println("Final Fitness: " + chromosome.getFitness());
     }
 
     public static void printOutput(boolean[] input, List<Double> output) {

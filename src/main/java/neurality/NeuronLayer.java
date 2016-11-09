@@ -16,12 +16,12 @@ public class NeuronLayer {
 
     private final List<AbstractNeuron> neuronList = new ArrayList<>();
 
-    public NeuronLayer(NeuralNet.NeuronMode mode, int neuronCount, double activationThreshold) {
+    public NeuronLayer(NeuralNet.NeuronMode mode, int neuronCount, double activationThreshold, boolean evolveActivationThreshold) {
         for(int i = 0; i < neuronCount; ++i) {
             if (mode == NeuralNet.NeuronMode.NEURON) {
-                neuronList.add(new Neuron(activationThreshold));
+                neuronList.add(new Neuron(activationThreshold, evolveActivationThreshold));
             } else {
-                neuronList.add(new Perceptron(activationThreshold));
+                neuronList.add(new Perceptron(activationThreshold, evolveActivationThreshold));
             }
         }
     }

@@ -13,7 +13,7 @@ public class NeuronLayerTest {
 
     @Test
     public void testExtractWeights() {
-        NeuronLayer layer = new NeuronLayer(NeuralNet.NeuronMode.PERCEPTRON, 3, .5);
+        NeuronLayer layer = new NeuronLayer(NeuralNet.NeuronMode.PERCEPTRON, 3, .5, false);
         InputLayer inputLayer = new InputLayer(1);
         inputLayer.setOutputLayer(layer);
         List<Double> weights = layer.extractWeights();
@@ -22,7 +22,7 @@ public class NeuronLayerTest {
 
     @Test
     public void testCalculateOutputs() {
-        NeuronLayer layer = new NeuronLayer(NeuralNet.NeuronMode.PERCEPTRON, 1, .5);
+        NeuronLayer layer = new NeuronLayer(NeuralNet.NeuronMode.PERCEPTRON, 1, .5, false);
         InputLayer inputLayer = new InputLayer(1);
         inputLayer.setOutputLayer(layer);
         inputLayer.setInput(0, true);

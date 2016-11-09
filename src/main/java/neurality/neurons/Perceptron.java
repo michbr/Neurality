@@ -7,8 +7,8 @@ import neurality.NeuronInput;
  */
 public class Perceptron extends AbstractNeuron {
 
-    public Perceptron(double activationThreshold) {
-        super(activationThreshold);
+    public Perceptron(double activationThreshold, boolean evolveActivationThreshold) {
+        super(activationThreshold, evolveActivationThreshold);
     }
 
     @Override
